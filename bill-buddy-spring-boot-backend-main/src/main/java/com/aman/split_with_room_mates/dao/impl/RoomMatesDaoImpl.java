@@ -1,0 +1,52 @@
+package com.aman.split_with_room_mates.dao.impl;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.aman.split_with_room_mates.dao.RoomMatesDao;
+import com.aman.split_with_room_mates.dao.UserDao;
+import com.aman.split_with_room_mates.dto.Rooms;
+import com.aman.split_with_room_mates.dto.User;
+import com.aman.split_with_room_mates.repository.RoomMatesRepository;
+import com.aman.split_with_room_mates.repository.RoomsRepository;
+
+import lombok.AllArgsConstructor;
+
+@SuppressWarnings("unused")
+@Repository
+@AllArgsConstructor
+public class RoomMatesDaoImpl implements RoomMatesDao {
+
+	private RoomMatesRepository roomMatesRepository;
+
+	private UserDao userDao;
+
+	@Override
+	public Rooms saveRoomMatesDao(Rooms roomMates) {
+		return roomMatesRepository.save(roomMates);
+	}
+
+	@Override
+	public Rooms addRoomMatesDao(String userEmail, String roomName) {
+		User user = userDao.findByEmailDao(userEmail);
+		Rooms roomMates = findByroomNameDao(roomName);
+
+		roomMatesRepository.addRoomMates(roomMates.getId(), user.getId());
+
+		return roomMates;
+	}
+
+	@Override
+	public Rooms findByroomNameDao(String roomName) {
+		return roomMatesRepository.findByroomName(roomName);
+	}
+
+	@Override
+	public List<Rooms> getAllRoomMatesDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
