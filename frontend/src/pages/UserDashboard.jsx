@@ -208,130 +208,178 @@ useEffect(() => {
 }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-          <div>
-            <button 
-            onClick={logoutuser}
-            className="bg-red-400 mr-2 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-500 transition-all duration-300 transform hover:scale-105">
-              Logout
+    <div className="min-h-screen bg-slate-50 font-sans">
+      {/* Top Navigation */}
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 flex items-center gap-2">
+                <div className="h-8 w-8 bg-indigo-600 rounded flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">BB</span>
+                </div>
+                <span className="font-bold text-xl text-slate-900 hidden sm:block">Bill-Buddy</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="hidden md:block">
+                <span className="text-sm text-slate-500 mr-2">Welcome,</span>
+                <span className="text-sm font-medium text-slate-900">{loginuser?.name || 'User'}</span>
+              </div>
+              <button
+                onClick={logoutuser}
+                className="inline-flex items-center justify-center px-4 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        {/* Page Header & Actions */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+          <div className="flex gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => setShowAddFriend(true)}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 transition-colors"
+            >
+              Add Friend
             </button>
             <button
               onClick={() => setShowCreateGroup(true)}
-              className="bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-all duration-300 transform hover:scale-105"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
             >
               Create Group
             </button>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Add Friend Section - Moved to top on mobile */}
-          <div className="col-span-2 md:col-span-1 order-first md:order-last">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <button
-                onClick={() => setShowAddFriend(true)}
-                className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-all duration-300 transform hover:scale-105"
-              >
-                Add Friend
-              </button>
-            </div>
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-center">
+            <dt className="text-sm font-medium text-slate-500 truncate">Total Amount Added By You</dt>
+            <dd className="mt-2 text-3xl font-semibold text-slate-900">₹{totalPrice || 0}</dd>
           </div>
+          
+          <div className={`rounded-xl shadow-sm border p-6 flex flex-col justify-center ${oweMessage && oweMessage !== "No one has borrowed money." ? "bg-amber-50 border-amber-200" : "bg-white border-slate-200"}`}>
+            <dt className="text-sm font-medium text-slate-500 truncate">Owe Status</dt>
+            <dd className={`mt-2 text-lg font-medium ${oweMessage && oweMessage !== "No one has borrowed money." ? "text-amber-800" : "text-slate-900"}`}>
+              {oweMessage || "No status available"}
+            </dd>
+          </div>
+        </div>
 
-          {/* Groups Section */}
-          <div className="col-span-2 order-last md:order-first">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex justify-between">
-                Your Groups
-
-                <div className="">
-                  <div>Welcome, <span>{loginuser?.name}</span></div>
-                  <p className="text-gray-400 text-sm text-end">Total Amount Added By You = <span>{totalPrice}</span></p>
+        {/* Two Column Layout for Groups and Items */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Groups List */}
+          <div className="lg:col-span-1 space-y-4">
+            <h2 className="text-lg font-semibold text-slate-900">Your Groups</h2>
+            
+            {groups?.length === 0 ? (
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+                <div className="mx-auto h-12 w-12 text-slate-400 mb-3 border-2 border-dashed border-slate-300 rounded-full flex items-center justify-center">
+                  <span className="text-xl">+</span>
                 </div>
-              </h2>
-              {groups?.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">
-                  No groups yet. Create one to get started!
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {groups?.map((group) => (
-                    <div
-                      key={group.id}
-                      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
-                    >
-                      <h3 className="text-xl font-semibold text-gray-800">
+                <h3 className="text-sm font-medium text-slate-900">No groups</h3>
+                <p className="mt-1 text-sm text-slate-500">Get started by creating a new group.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {groups?.map((group) => (
+                  <div
+                    key={group.id}
+                    className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:border-indigo-300 transition-colors"
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-base font-semibold text-slate-900 truncate pr-2">
                         {group.roomName}
                       </h3>
-                      <p className="text-gray-600 mt-1">{group.description}</p>
-                      <div className="mt-4 flex justify-between items-center">
-                        <span className="text-sm text-gray-500">
-                          {group.users.length} members
-                        </span>
-                        <div className="space-x-2 flex flex-col md:flex-row">
-                          <button
-                            onClick={() => {
-                              setSelectedGroupForItem(group);
-                              setShowAddItem(true);
-                            }}
-                            className="text-green-500  hover:text-green-700 font-medium"
-                          >
-                            Add Item
-                          </button>
-                          <button
-                            onClick={() => setSelectedGroup(group)}
-                            className="text-purple-600 hover:text-purple-700 font-medium  "
-                          >
-                            View Details
-                          </button>
-                        </div>
-                      </div>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                        {group.users?.length || 0} members
+                      </span>
                     </div>
-                  ))}
+                    <p className="text-sm text-slate-500 line-clamp-2 mb-4 h-10">
+                      {group.description || "No description provided."}
+                    </p>
+                    <div className="flex gap-2 mt-auto">
+                      <button
+                        onClick={() => setSelectedGroup(group)}
+                        className="flex-1 inline-flex justify-center items-center px-3 py-1.5 border border-slate-300 shadow-sm text-xs font-medium rounded text-slate-700 bg-white hover:bg-slate-50"
+                      >
+                        Details
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedGroupForItem(group);
+                          setShowAddItem(true);
+                        }}
+                        className="flex-1 inline-flex justify-center items-center px-3 py-1.5 border border-transparent shadow-sm text-xs font-medium rounded text-white bg-indigo-600 hover:bg-indigo-700"
+                      >
+                        + Add Item
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Group Items Data Table */}
+          <div className="lg:col-span-2 space-y-4">
+            <h2 className="text-lg font-semibold text-slate-900">Recent Group Items</h2>
+            
+            <div className="bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden">
+              {groupItems.length === 0 ? (
+                <div className="p-8 text-center">
+                  <p className="text-sm text-slate-500">No items have been added to your groups yet.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-slate-200">
+                    <thead className="bg-slate-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                          Added By
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                          Item Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
+                          Amount
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-slate-200">
+                      {groupItems.map((item, index) => (
+                        <tr key={index} className="hover:bg-slate-50 transition-colors">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                            {item.username}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                            {item.itemname}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 text-right">
+                            ₹{item.price}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>
           </div>
+          
         </div>
-        {oweMessage && (
-  <div className="bg-yellow-100 mt-10 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded-lg shadow-sm">
-    <p className="font-medium">{oweMessage}</p>
-  </div>
-)}
-        {/* Group Items Table */}
-<div className="mt-10 bg-white p-6 rounded-lg shadow-lg">
-  <h2 className="text-2xl font-semibold mb-4 text-gray-800">Group Items</h2>
-  {groupItems.length === 0 ? (
-    <p className="text-gray-500">No items found.</p>
-  ) : (
-    <table className="w-full table-auto border-collapse">
-      <thead>
-        <tr className="bg-gray-100 text-left">
-          <th className="px-4 py-2 border">Username</th>
-          <th className="px-4 py-2 border">Item Name</th>
-          <th className="px-4 py-2 border">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        {groupItems.map((item, index) => (
-          <tr key={index} className="hover:bg-gray-50">
-            <td className="px-4 py-2 border">{item.username}</td>
-            <td className="px-4 py-2 border">{item.itemname}</td>
-            <td className="px-4 py-2 border">₹{item.price}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )}
-</div>
-      </div>
+      </main>
 
       {/* Modals */}
-
       <CreateGroupModal
         show={showCreateGroup}
         onClose={() => setShowCreateGroup(false)}

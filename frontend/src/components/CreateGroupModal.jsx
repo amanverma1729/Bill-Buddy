@@ -10,16 +10,22 @@ const CreateGroupModal = ({
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#000000d4] flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-xl p-6 w-96 transform transition-all duration-300">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Create New Group
-        </h2>
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm transition-opacity">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden transform transition-all">
+        <div className="px-6 py-5 border-b border-slate-200">
+          <h3 className="text-lg font-medium text-slate-900">
+            Create New Group
+          </h3>
+          <p className="mt-1 text-sm text-slate-500">
+            Add a new group to start tracking shared expenses.
+          </p>
+        </div>
+        
+        <form onSubmit={onSubmit}>
+          <div className="px-6 py-5">
             <label
               htmlFor="groupName"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-slate-700 mb-1"
             >
               Group Name
             </label>
@@ -28,23 +34,23 @@ const CreateGroupModal = ({
               id="groupName"
               value={newGroup.roomName}
               onChange={(e) => setNewGroup({ roomName: e.target.value })}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter group name"
+              className="appearance-none block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g. Goa Trip"
               required
             />
           </div>
 
-          <div className="flex justify-end space-x-3">
+          <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-3 rounded-b-xl">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              className="inline-flex justify-center px-4 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300"
+              className="inline-flex justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Create Group
             </button>
