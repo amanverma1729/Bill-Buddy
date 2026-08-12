@@ -30,3 +30,5 @@ target/
 *.iml
 .idea/
 .vscode/
+.bill-buddy-spring-boot-backend-main/bin/
+
