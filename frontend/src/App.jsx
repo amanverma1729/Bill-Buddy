@@ -2,6 +2,8 @@ import React from "react";
 import Signup from "./pages/Signup";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Layout from "./pages/Layout";
 import UserDashboard from "./pages/UserDashboard";
 import PrivateRoute from "./private/PrivateRoute";
@@ -19,6 +21,14 @@ const App = () => {
         {
           path: "/login",
           element: <Login />,
+        },
+        {
+          path: "/forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "/reset-password",
+          element: <ResetPassword />,
         },
         {
           path: "/userdashboard",

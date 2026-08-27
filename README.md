@@ -1,6 +1,6 @@
 # 💰 Bill-Buddy (Split with Roommates)
 
-**Bill-Buddy** is a full-stack expense-sharing web application designed to help roommates and friends effortlessly track shared expenses, split bills, manage groups, and settle balances in real-time.
+**Bill-Buddy** is a modern, full-stack expense-sharing web application designed to help roommates and friends effortlessly track shared expenses, split bills, manage groups, and settle balances in real-time.
 
 ---
 
@@ -14,19 +14,32 @@
 
 ### **Frontend**
 - **Framework & Build Tool:** React 19, Vite 6
-- **Styling:** Tailwind CSS 4
+- **Styling:** Tailwind CSS 4, Glassmorphism, Theme Context (Dark/Light Mode)
 - **Routing & State:** React Router v7, Axios, React Toastify
 
 ---
 
 ## ✨ Key Features
 
-- 👤 **User Management & Authentication**: Secure sign-up, login, and session tracking.
+- 👤 **User Management & Modern Auth UI**: Glassmorphic Sign-up, Login, and Forgot/Reset Password flows.
+- ☀️ **Dark & Light Mode Switcher**: Animated dual-segment theme toggle with persistent user preference.
 - 👥 **Group Management**: Create roommate/friend groups and add members seamlessly.
-- 🧾 **Expense Tracking**: Log joint expenses, purchases, and shared bills with item details.
+- 🧾 **Expense Tracking & Pagination**: Log joint expenses with instant search filtering and table pagination.
 - ⚖️ **Balance Settlement**: Automated debt calculation showing who owes what to whom.
-- 🔔 **Real-Time UI & Notifications**: Responsive Tailwind-styled UI with interactive modals and toast notifications.
 - 📄 **API Documentation**: Interactive Swagger API docs built into the backend server.
+
+---
+
+## 📸 Screenshots & Visual Overview
+
+### **Modern Login Screen**
+![Login Screen](backend/login.png)
+
+### **Account Registration Screen**
+![Signup Screen](backend/signup.png)
+
+### **Forgot Password & Recovery Flow**
+![Forgot Password Screen](backend/forgot-password.png)
 
 ---
 
@@ -41,8 +54,9 @@ bill-buddy/
 │   └── pom.xml               # Maven dependencies and build setup
 └── frontend/                 # React SPA Frontend
     ├── src/                  # Components, Pages, and Layouts
-    │   ├── components/       # Modals (Add Friend, Add Item, Create Group, Group Details)
-    │   ├── pages/            # Login, Signup, User Dashboard, Layout
+    │   ├── components/       # ThemeToggle, Footer, Modals (Add Friend, Add Item, Create Group)
+    │   ├── context/          # ThemeContext for Dark/Light mode
+    │   ├── pages/            # Login, Signup, ForgotPassword, ResetPassword, UserDashboard, Layout
     │   └── App.jsx           # Main router entry point
     ├── package.json          # Frontend dependencies and npm scripts
     └── vite.config.js        # Vite configuration
@@ -111,18 +125,7 @@ Start the Vite development server:
 npm run dev
 ```
 
-Open your browser and navigate to `http://localhost:5173` (or the URL output in your terminal).
-
----
-
-## 📸 Screenshots & Visual Overview
-
-*(Screenshots available in `backend/` directory)*
-
-- **User Authentication**: Login & Sign-up pages for secure access.
-- **Dashboard**: Centralized overview of active groups, balance summaries, and owed items.
-- **Group Management**: Interfaces for group creation and inviting members.
-- **Itemized Expenses**: Modals for splitting costs across group participants.
+Open your browser and navigate to `http://localhost:5173`.
 
 ---
 
