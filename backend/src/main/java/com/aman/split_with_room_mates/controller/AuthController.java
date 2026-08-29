@@ -15,7 +15,7 @@ import com.aman.split_with_room_mates.dto.ResetPasswordRequest;
 import com.aman.split_with_room_mates.service.PasswordResetService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 @RequestMapping("/api/auth")
 public class AuthController {
 

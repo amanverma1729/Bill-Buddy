@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 
 @RestController
-@CrossOrigin(value = "http://localhost:5173")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 @RequestMapping(value = "/user")
 @AllArgsConstructor
 public class UserController {

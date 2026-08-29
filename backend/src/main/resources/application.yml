@@ -11,9 +11,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL:jdbc:mysql://localhost:3306/bill_buddy_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:123456}
+    url: ${DB_URL:jdbc:mysql://mysql-359b1b28-amanverma0202004-0667.a.aivencloud.com:27634/bill_buddy_db?ssl-mode=REQUIRED}
+    username: ${DB_USERNAME:avnadmin}
+    password: ${DB_PASSWORD:}
 
   jpa:
     hibernate:

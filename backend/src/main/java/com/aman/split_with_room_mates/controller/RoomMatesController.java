@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping(value = "/roomMates")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class RoomMatesController {
 
 	private RoomMatesDao matesDao;

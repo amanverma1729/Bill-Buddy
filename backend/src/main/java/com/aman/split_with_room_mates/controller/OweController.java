@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping(value = "/owe")
-@CrossOrigin(value = "http://localhost:5173")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class OweController {
 
 	@Autowired
