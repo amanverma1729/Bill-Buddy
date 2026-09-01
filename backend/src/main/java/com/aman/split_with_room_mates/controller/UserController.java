@@ -37,36 +37,43 @@ public class UserController {
 	 */
 	@PostMapping(value = "/saveUser")
 	public ResponseEntity<?> saveUserController(@RequestBody User user) {
-		if (user == null || user.getEmail() == null || user.getEmail().trim().isEmpty()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("message", "Email address is required"));
-		}
+		try {
+			if (user == null || user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("message", "Email address is required"));
+			}
 
-		if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("message", "Password is required"));
-		}
+			if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("message", "Password is required"));
+			}
 
-		String cleanEmail = user.getEmail().trim().toLowerCase();
-		user.setEmail(cleanEmail);
-		if (user.getName() != null) {
-			user.setName(user.getName().trim());
-		}
+			String cleanEmail = user.getEmail().trim().toLowerCase();
+			user.setEmail(cleanEmail);
+			if (user.getName() != null) {
+				user.setName(user.getName().trim());
+			}
 
-		// Check if user account with this email already exists
-		User existingUser = userDao.findByEmailDao(cleanEmail);
-		if (existingUser != null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body(Map.of("message", "An account with this email already exists"));
-		}
+			// Check if user account with this email already exists
+			User existingUser = userDao.findByEmailDao(cleanEmail);
+			if (existingUser != null) {
+				return ResponseEntity.status(HttpStatus.CONFLICT)
+						.body(Map.of("message", "An account with this email already exists"));
+			}
 
-		User savedUser = userDao.saveUserDao(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
-				"message", "Account created successfully",
-				"id", savedUser.getId(),
-				"email", savedUser.getEmail(),
-				"name", savedUser.getName() != null ? savedUser.getName() : ""
-		));
+			User savedUser = userDao.saveUserDao(user);
+			return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+					"message", "Account created successfully",
+					"id", savedUser.getId(),
+					"email", savedUser.getEmail(),
+					"name", savedUser.getName() != null ? savedUser.getName() : ""
+			));
+		} catch (Exception e) {
+			System.err.println("Error saving user: " + e.getMessage());
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("message", "Server error while saving user: " + e.getMessage()));
+		}
 	}
 
 	@GetMapping(value = "/loginUser/{userEmail}/{userPass}")
