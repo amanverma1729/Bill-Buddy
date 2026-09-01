@@ -21,6 +21,13 @@ public class DatabaseSchemaInitializer implements CommandLineRunner {
     public void run(String... args) {
         log.info("Ensuring database tables have AUTO_INCREMENT primary keys...");
         try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
+            // Disable foreign key checks so MySQL allows modifying primary key columns
+            try {
+                stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
+            } catch (Exception e) {
+                log.warn("Could not disable foreign key checks: {}", e.getMessage());
+            }
+
             String[] alterQueries = {
                 "ALTER TABLE user MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT",
                 "ALTER TABLE rooms MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT",
@@ -36,6 +43,12 @@ public class DatabaseSchemaInitializer implements CommandLineRunner {
                 } catch (Exception e) {
                     log.warn("Database schema update notice for '{}': {}", query, e.getMessage());
                 }
+            }
+
+            try {
+                stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
+            } catch (Exception e) {
+                log.warn("Could not re-enable foreign key checks: {}", e.getMessage());
             }
         } catch (Exception e) {
             log.error("Could not run database schema initializer: {}", e.getMessage());

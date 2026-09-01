@@ -61,6 +61,7 @@ public class UserController {
 						.body(Map.of("message", "An account with this email already exists"));
 			}
 
+			user.setId(null);
 			User savedUser = userDao.saveUserDao(user);
 			return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
 					"message", "Account created successfully",
