@@ -11,14 +11,18 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL:jdbc:mysql://mysql-359b1b28-amanverma0202004-0667.a.aivencloud.com:27634/bill_buddy_db?ssl-mode=REQUIRED}
+    url: ${DB_URL:jdbc:mysql://mysql-1541e490-udayfoundation2025-bf90.l.aivencloud.com:27059/defaultdb?ssl-mode=REQUIRED}
     username: ${DB_USERNAME:avnadmin}
     password: ${DB_PASSWORD:}
 
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: ${DDL_AUTO:update}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: ${SHOW_SQL:false}
 
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}

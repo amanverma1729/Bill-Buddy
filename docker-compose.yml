@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: billbuddy-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: bill_buddy_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build: ./backend
+    container_name: billbuddy-backend
+    restart: always
+    ports:
+      - "8182:8182"
+    environment:
+      PORT: 8182
+      DB_URL: jdbc:mysql://mysqldb:3306/bill_buddy_db?allowPublicKeyRetrieval=true&useSSL=false
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+      FRONTEND_URL: http://localhost:5173
+    depends_on:
+      - mysqldb
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: billbuddy-frontend
+    ports:
+      - "5173:80"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8182
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
