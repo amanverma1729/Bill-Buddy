@@ -11,18 +11,14 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL:jdbc:mysql://mysql-1541e490-udayfoundation2025-bf90.l.aivencloud.com:27059/defaultdb?ssl-mode=REQUIRED}
-    username: ${DB_USERNAME:avnadmin}
-    password: ${DB_PASSWORD:}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: ${DDL_AUTO:update}
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-    show-sql: ${SHOW_SQL:false}
+      ddl-auto: update
+    show-sql: false
 
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
