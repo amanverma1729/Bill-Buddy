@@ -61,7 +61,12 @@ public class UserController {
 		}
 
 		User savedUser = userDao.saveUserDao(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+		return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+				"message", "Account created successfully",
+				"id", savedUser.getId(),
+				"email", savedUser.getEmail(),
+				"name", savedUser.getName() != null ? savedUser.getName() : ""
+		));
 	}
 
 	@GetMapping(value = "/loginUser/{userEmail}/{userPass}")
