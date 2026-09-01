@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { API_BASE_URL } from "../config/api";
+import { getApiUrl } from "../config/api";
 import ThemeToggle from "../components/ThemeToggle";
 
 const Login = () => {
@@ -30,7 +30,7 @@ const Login = () => {
       let data;
       try {
         const res = await axios.post(
-          `${API_BASE_URL}/user/loginUser`,
+          getApiUrl("/user/loginUser"),
           { email: formData.email, password: formData.password },
           { withCredentials: true }
         );
@@ -38,7 +38,7 @@ const Login = () => {
       } catch (postErr) {
         if (postErr.response?.status === 404 || postErr.response?.status === 405) {
           const res = await axios.get(
-            `${API_BASE_URL}/user/loginUser/${encodeURIComponent(formData.email)}/${encodeURIComponent(formData.password)}`,
+            getApiUrl(`/user/loginUser/${encodeURIComponent(formData.email)}/${encodeURIComponent(formData.password)}`),
             { withCredentials: true }
           );
           data = res.data;

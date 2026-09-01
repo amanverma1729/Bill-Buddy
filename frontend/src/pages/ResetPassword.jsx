@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { API_BASE_URL } from "../config/api";
+import { getApiUrl } from "../config/api";
 import ThemeToggle from "../components/ThemeToggle";
 
 const ResetPassword = () => {
@@ -50,7 +50,7 @@ const ResetPassword = () => {
     setIsLoading(true);
 
     try {
-      let { data } = await axios.post(`${API_BASE_URL}/api/auth/reset-password`, {
+      let { data } = await axios.post(getApiUrl("/api/auth/reset-password"), {
         token: token.trim(),
         newPassword: newPassword,
       });

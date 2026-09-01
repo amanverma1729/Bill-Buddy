@@ -6,7 +6,7 @@ import AddFriendModal from "../components/AddFriendModal";
 import AddItemModal from "../components/AddItemModal";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../config/api";
+import { getApiUrl } from "../config/api";
 import ThemeToggle from "../components/ThemeToggle";
 
 const UserDashboard = () => {
@@ -39,7 +39,7 @@ const UserDashboard = () => {
   async function getAllGroups() {
     try {
       let { data } = await axios.get(
-        `${API_BASE_URL}/roomMates/getAllRoomDetails`,
+        getApiUrl("/roomMates/getAllRoomDetails"),
         { withCredentials: true }
       );
       setGroups(data || []);
@@ -51,7 +51,7 @@ const UserDashboard = () => {
   async function getloginuserData() {
     try {
       let { data } = await axios.get(
-        `${API_BASE_URL}/user/getUserName`,
+        getApiUrl("/user/getUserName"),
         { withCredentials: true }
       );
       setLoginuser(data);
@@ -63,7 +63,7 @@ const UserDashboard = () => {
   async function getTotalPrice() {
     try {
       let { data } = await axios.get(
-        `${API_BASE_URL}/user/getUserLoggedInAddedItemsSummation`,
+        getApiUrl("/user/getUserLoggedInAddedItemsSummation"),
         { withCredentials: true }
       );
       setTotalPrice(data.totalSum || 0);
@@ -81,7 +81,7 @@ const UserDashboard = () => {
     if (newGroup.roomName.trim()) {
       try {
         let resp = await axios.post(
-          `${API_BASE_URL}/roomMates/createRoom`,
+          getApiUrl("/roomMates/createRoom"),
           newGroup,
           { withCredentials: true }
         );
@@ -107,7 +107,7 @@ const UserDashboard = () => {
     if (newFriend.userEmail.trim() && newFriend.roomName.trim()) {
       try {
         let resp = await axios.get(
-          `${API_BASE_URL}/roomMates/addRoomMates/${encodeURIComponent(newFriend.userEmail)}/${encodeURIComponent(newFriend.roomName)}`,
+          getApiUrl(`/roomMates/addRoomMates/${encodeURIComponent(newFriend.userEmail)}/${encodeURIComponent(newFriend.roomName)}`),
           { withCredentials: true }
         );
         toast.success("Friend added to group!");
@@ -124,7 +124,7 @@ const UserDashboard = () => {
   const handleAddItem = async (itemData, roomName) => {
     try {
       let resp = await axios.post(
-        `${API_BASE_URL}/items/addItems/${encodeURIComponent(roomName)}`,
+        getApiUrl(`/items/addItems/${encodeURIComponent(roomName)}`),
         itemData,
         { withCredentials: true }
       );
@@ -142,7 +142,7 @@ const UserDashboard = () => {
 
   const logoutuser = async () => {
     try {
-      let resp = await axios.get(`${API_BASE_URL}/user/userLogout`, {
+      let resp = await axios.get(getApiUrl("/user/userLogout"), {
         withCredentials: true,
       });
 
@@ -165,7 +165,7 @@ const UserDashboard = () => {
 
   const fetchGroupItems = async () => {
     try {
-      const { data } = await axios.get(`${API_BASE_URL}/items/groupItems`, {
+      const { data } = await axios.get(getApiUrl("/items/groupItems"), {
         withCredentials: true,
       });
       setGroupItems(data.userItems || []);
@@ -177,7 +177,7 @@ const UserDashboard = () => {
   const fetchOweInfo = async () => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/owe/getOweUserByLoggedUserId`,
+        getApiUrl("/owe/getOweUserByLoggedUserId"),
         { withCredentials: true }
       );
       const data = response.data;

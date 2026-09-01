@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { API_BASE_URL } from "../config/api";
+import { getApiUrl } from "../config/api";
 import ThemeToggle from "../components/ThemeToggle";
 
 const ForgotPassword = () => {
@@ -24,7 +24,7 @@ const ForgotPassword = () => {
     setDevResetUrl("");
 
     try {
-      let { data } = await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, {
+      let { data } = await axios.post(getApiUrl("/api/auth/forgot-password"), {
         email: email.trim(),
       });
       setIsSubmitted(true);
