@@ -49,11 +49,28 @@ public class UserController {
 
 		User user = userDao.findByEmailDao(userEmail);
 
-		if (user != null && user.getPassword().equals(userPass)) {
+		if (user != null && user.getPassword() != null && user.getPassword().equals(userPass)) {
 
 			httpSession.setAttribute("userSession", user.getEmail());
 
 			return ResponseEntity.ok(Map.of("message", "Login Success", "userEmail", user.getEmail()));
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+	}
+
+	@PostMapping(value = "/loginUser")
+	public ResponseEntity<?> loginWithUserPostController(@RequestBody Map<String, String> loginRequest) {
+		String userEmail = loginRequest != null ? loginRequest.get("email") : null;
+		String userPass = loginRequest != null ? loginRequest.get("password") : null;
+
+		System.out.println("login user POST !!! " + userEmail);
+
+		if (userEmail != null && userPass != null) {
+			User user = userDao.findByEmailDao(userEmail);
+			if (user != null && user.getPassword() != null && user.getPassword().equals(userPass)) {
+				httpSession.setAttribute("userSession", user.getEmail());
+				return ResponseEntity.ok(Map.of("message", "Login Success", "userEmail", user.getEmail()));
+			}
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
 	}

@@ -76,10 +76,15 @@ public class RoomMatesController {
 	public List<Rooms> saveRoomMatesController() {
 		System.out.println("getUserRooms API called");
 
-		// Get the logged-in user's email from session
 		String email = (String) httpSession.getAttribute("userSession");
+		if (email == null) {
+			return List.of();
+		}
 		
 		User loggedInUser = dao.findByEmailDao(email);
+		if (loggedInUser == null) {
+			return List.of();
+		}
 
 		// Fetch all rooms where the user is a member
 		List<Rooms> userRooms = roomDao.findRoomsByUserId(loggedInUser.getId());

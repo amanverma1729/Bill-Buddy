@@ -27,11 +27,27 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      let { data } = await axios.get(
-        `${API_BASE_URL}/user/loginUser/${encodeURIComponent(formData.email)}/${encodeURIComponent(formData.password)}`,
-        { withCredentials: true }
-      );
-      if (data.message === "Login Success") {
+      let data;
+      try {
+        const res = await axios.post(
+          `${API_BASE_URL}/user/loginUser`,
+          { email: formData.email, password: formData.password },
+          { withCredentials: true }
+        );
+        data = res.data;
+      } catch (postErr) {
+        if (postErr.response?.status === 404 || postErr.response?.status === 405) {
+          const res = await axios.get(
+            `${API_BASE_URL}/user/loginUser/${encodeURIComponent(formData.email)}/${encodeURIComponent(formData.password)}`,
+            { withCredentials: true }
+          );
+          data = res.data;
+        } else {
+          throw postErr;
+        }
+      }
+
+      if (data && (data.message === "Login Success" || data.message?.includes("Login Success"))) {
         toast.success("Welcome back to Bill-Buddy!");
         sessionStorage.setItem("accesstoken", Date.now());
         sessionStorage.setItem("useremail", formData.email);
@@ -41,7 +57,7 @@ const Login = () => {
       if (error.code === "ERR_NETWORK" || !error.response) {
         toast.error("Unable to connect to server. Please check backend status.");
       } else if (error.response?.data === "Invalid Credentials" || error.response?.status === 401) {
-        toast.error("Invalid email or password");
+        toast.error("Invalid email or password. Please make sure you have signed up first.");
       } else {
         toast.error("An error occurred during login. Please try again.");
       }
