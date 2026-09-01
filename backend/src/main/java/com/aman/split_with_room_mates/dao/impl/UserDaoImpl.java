@@ -23,8 +23,11 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User findByEmailDao(String userEmail) {
-		Optional<User> user=repository.findByEmail(userEmail);
-		return user.isPresent()?user.get():null;
+		if (userEmail == null || userEmail.trim().isEmpty()) {
+			return null;
+		}
+		Optional<User> user = repository.findFirstByEmail(userEmail.trim().toLowerCase());
+		return user.orElse(null);
 	}
 
 	@Override

@@ -36,9 +36,32 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping(value = "/saveUser")
-	public User saveUserController(@RequestBody User user) {
+	public ResponseEntity<?> saveUserController(@RequestBody User user) {
+		if (user == null || user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("message", "Email address is required"));
+		}
 
-		return userDao.saveUserDao(user);
+		if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("message", "Password is required"));
+		}
+
+		String cleanEmail = user.getEmail().trim().toLowerCase();
+		user.setEmail(cleanEmail);
+		if (user.getName() != null) {
+			user.setName(user.getName().trim());
+		}
+
+		// Check if user account with this email already exists
+		User existingUser = userDao.findByEmailDao(cleanEmail);
+		if (existingUser != null) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(Map.of("message", "An account with this email already exists"));
+		}
+
+		User savedUser = userDao.saveUserDao(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
 	}
 
 	@GetMapping(value = "/loginUser/{userEmail}/{userPass}")
@@ -46,8 +69,11 @@ public class UserController {
 			@PathVariable(name = "userPass") String userPass) {
 
 		System.out.println("login user !!!");
+		if (userEmail == null || userPass == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid Credentials"));
+		}
 
-		User user = userDao.findByEmailDao(userEmail);
+		User user = userDao.findByEmailDao(userEmail.trim().toLowerCase());
 
 		if (user != null && user.getPassword() != null && user.getPassword().equals(userPass)) {
 
@@ -55,7 +81,7 @@ public class UserController {
 
 			return ResponseEntity.ok(Map.of("message", "Login Success", "userEmail", user.getEmail()));
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid Credentials"));
 	}
 
 	@PostMapping(value = "/loginUser")
@@ -66,13 +92,13 @@ public class UserController {
 		System.out.println("login user POST !!! " + userEmail);
 
 		if (userEmail != null && userPass != null) {
-			User user = userDao.findByEmailDao(userEmail);
+			User user = userDao.findByEmailDao(userEmail.trim().toLowerCase());
 			if (user != null && user.getPassword() != null && user.getPassword().equals(userPass)) {
 				httpSession.setAttribute("userSession", user.getEmail());
 				return ResponseEntity.ok(Map.of("message", "Login Success", "userEmail", user.getEmail()));
 			}
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid Credentials"));
 	}
 
 	@GetMapping(value = "/userLogout")
