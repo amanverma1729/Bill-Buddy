@@ -26,7 +26,7 @@ public class Owe {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "borrowed_userid")
 	private int borrowUserId;
 	private double lendmoney;

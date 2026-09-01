@@ -30,7 +30,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private int id;
+	private Integer id;
 	private String name;
 	private String email;
 	private String password;
